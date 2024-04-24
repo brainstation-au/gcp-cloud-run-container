@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 amazonlinux:latest
 
 RUN yum update -y && \
-    yum install -y gzip tar unzip
+    yum install -y gzip jq tar unzip
 
 WORKDIR /opt/cli
 
