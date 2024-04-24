@@ -19,4 +19,4 @@ WORKDIR /opt/app
 
 COPY list-bucket.sh .
 
-CMD ["gcloud", "version"]
+CMD ["./list-bucket.sh"]
