@@ -1,7 +1,22 @@
-FROM python:slim
+FROM --platform=linux/amd64 amazonlinux:latest
 
-WORKDIR /opt/code
+RUN yum update -y && \
+    yum install -y gzip tar unzip
 
-COPY main.py .
+WORKDIR /opt/cli
 
-CMD ["python", "main.py"]
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
+
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-472.0.0-linux-x86_64.tar.gz && \
+    tar -xf google-cloud-cli-472.0.0-linux-x86_64.tar.gz && \
+    ./google-cloud-sdk/install.sh --usage-reporting=false --command-completion=false --path-update=false --quiet
+
+ENV PATH="/opt/cli/google-cloud-sdk/bin:$PATH"
+
+WORKDIR /opt/app
+
+COPY list-bucket.sh .
+
+CMD ["gcloud", "version"]
